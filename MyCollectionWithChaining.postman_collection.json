@@ -1,0 +1,331 @@
+{
+	"info": {
+		"_postman_id": "2c3d3860-76a2-44f9-b3d2-aa870ddba0eb",
+		"name": "MyCollectionWithChaining",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "28182071"
+	},
+	"item": [
+		{
+			"name": "POSTRequest",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"// id is expected and to save it in a variable\r",
+							"pm.environment.set(\"id\", pm.response.json().id);\r",
+							"\r",
+							"// Status Code Assertion\r",
+							"pm.test(\"Status Code is 201\", () => {\r",
+							"    pm.response.to.have.status(201);\r",
+							"});\r",
+							"\r",
+							"// Cookies not available\r",
+							"\r",
+							"// Header Assertion\r",
+							"pm.test(\"Content-type header is present\", () => {\r",
+							"    pm.response.to.have.header(\"Content-Type\");\r",
+							"});\r",
+							"\r",
+							"// Time Assertion\r",
+							"pm.test(\"Response time is less than 900ms\", () => {\r",
+							"    pm.expect(pm.response.responseTime).to.be.below(900);\r",
+							"});"
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "b9ac510e852bff2c0e167289c4b136da7b90e722a26627fd10587a6981474733",
+							"type": "string"
+						}
+					]
+				},
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n        \"name\": \"Joseph\",\r\n        \"email\": \"Joseph@bode.example\",\r\n        \"gender\": \"male\",\r\n        \"status\": \"active\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "https://gorest.co.in/public/v2/users",
+					"protocol": "https",
+					"host": [
+						"gorest",
+						"co",
+						"in"
+					],
+					"path": [
+						"public",
+						"v2",
+						"users"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "GETRequest",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"// Assigning json reponse to a variable\r",
+							"const jsonData = pm.response.json();\r",
+							"\r",
+							"// Status Code Assertion\r",
+							"pm.test(\"Status Code is 200\", ()=> {\r",
+							"    pm.response.to.have.status(200)\r",
+							"});\r",
+							"\r",
+							"// Cookies not available\r",
+							"\r",
+							"// Header Assertion\r",
+							"pm.test(\"Content-type header is present\", ()=> {\r",
+							"    pm.response.to.have.header(\"Content-Type\")\r",
+							"});\r",
+							"\r",
+							"// Time Assertion\r",
+							"pm.test(\"Response time is less than 1200ms\", () => {\r",
+							"\tpm.expect(pm.response.responseTime).to.be.below(1200);\r",
+							"});\r",
+							"\r",
+							"//Data Validation in JSON Schema level from response\r",
+							"var schema = {\r",
+							"  \"$schema\": \"http://json-schema.org/draft-04/schema#\",\r",
+							"  \"type\": \"object\",\r",
+							"  \"properties\": {\r",
+							"    \"id\": {\r",
+							"      \"type\": \"integer\"\r",
+							"    },\r",
+							"    \"name\": {\r",
+							"      \"type\": \"string\"\r",
+							"    },\r",
+							"    \"email\": {\r",
+							"      \"type\": \"string\"\r",
+							"    },\r",
+							"    \"gender\": {\r",
+							"      \"type\": \"string\"\r",
+							"    },\r",
+							"    \"status\": {\r",
+							"      \"type\": \"string\"\r",
+							"    }\r",
+							"  },\r",
+							"  \"required\": [\r",
+							"    \"id\",\r",
+							"    \"name\",\r",
+							"    \"email\",\r",
+							"    \"gender\",\r",
+							"    \"status\"\r",
+							"  ]\r",
+							"}\r",
+							"\r",
+							"// Value Type Assertion from Response\r",
+							"pm.test(\"Test data types of the response\", function () {\r",
+							"    pm.expect(jsonData).to.be.an(\"object\");\r",
+							"    pm.expect(jsonData.id).to.be.a(\"number\");\r",
+							"    pm.expect(jsonData.name).to.be.a(\"string\");\r",
+							"    pm.expect(jsonData.email).to.be.a(\"string\");\r",
+							"    pm.expect(jsonData.gender).to.be.a(\"string\");\r",
+							"    pm.expect(jsonData.status).to.be.a(\"string\");\r",
+							" \r",
+							"});\r",
+							"\r",
+							"// Data Validation in JSON Field level from response\r",
+							"pm.test(\"Data Validation in JSON Field level\", function () {\r",
+							"    pm.expect(jsonData.id).to.eql(6793477);\r",
+							"    pm.expect(jsonData.name).to.eql(\"Joseph\");\r",
+							"    pm.expect(jsonData.email).to.eql(\"Joseph@bode.example\");\r",
+							"    pm.expect(jsonData.gender).to.eql(\"male\");\r",
+							"    pm.expect(jsonData.status).to.eql(\"active\")\r",
+							"});"
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "b9ac510e852bff2c0e167289c4b136da7b90e722a26627fd10587a6981474733",
+							"type": "string"
+						}
+					]
+				},
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "https://gorest.co.in/public/v2/users/{{id}}",
+					"protocol": "https",
+					"host": [
+						"gorest",
+						"co",
+						"in"
+					],
+					"path": [
+						"public",
+						"v2",
+						"users",
+						"{{id}}"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "PUTRequest",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"// Status Code Assertion\r",
+							"pm.test(\"Status Code is 200\", ()=> {\r",
+							"    pm.response.to.have.status(200)\r",
+							"});\r",
+							"\r",
+							"// Cookies not available\r",
+							"\r",
+							"// Header Assertion\r",
+							"pm.test(\"Content-type header is present\", ()=> {\r",
+							"    pm.response.to.have.header(\"Content-Type\")\r",
+							"});\r",
+							"\r",
+							"// Time Assertion\r",
+							"pm.test(\"Response time is less than 1000ms\", () => {\r",
+							"\tpm.expect(pm.response.responseTime).to.be.below(1000);\r",
+							"});\r",
+							"\r",
+							"//Assigning the reposne to a variable\r",
+							"const jsonData = pm.response.json();\r",
+							"\r",
+							"// Data Validation in JSON Field level from response\r",
+							"pm.test(\"Data Validation in JSON Field level\", function () {\r",
+							"    pm.expect(jsonData.id).to.eql(6793477);\r",
+							"    pm.expect(jsonData.name).to.eql(\"Joseph\");\r",
+							"    pm.expect(jsonData.email).to.eql(\"Joseph@bode.example\");\r",
+							"    pm.expect(jsonData.gender).to.eql(\"male\");\r",
+							"    pm.expect(jsonData.status).to.eql(\"inactive\");\r",
+							"});"
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "b9ac510e852bff2c0e167289c4b136da7b90e722a26627fd10587a6981474733",
+							"type": "string"
+						}
+					]
+				},
+				"method": "PUT",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"status\": \"inactive\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "https://gorest.co.in/public/v2/users/{{id}}",
+					"protocol": "https",
+					"host": [
+						"gorest",
+						"co",
+						"in"
+					],
+					"path": [
+						"public",
+						"v2",
+						"users",
+						"{{id}}"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "DELETERequest",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"// Status Code Assertion\r",
+							"pm.test(\"Status Code is 204\", ()=> {\r",
+							"    pm.response.to.have.status(204)\r",
+							"});\r",
+							"\r",
+							"// Header Assertion\r",
+							"pm.test(\"Cache-Control header is present\", ()=> {\r",
+							"    pm.response.to.have.header(\"Cache-Control\")\r",
+							"});\r",
+							"\r",
+							"// Unset the id variable\r",
+							"pm.environment.unset(\"id\");"
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "b9ac510e852bff2c0e167289c4b136da7b90e722a26627fd10587a6981474733",
+							"type": "string"
+						}
+					]
+				},
+				"method": "DELETE",
+				"header": [],
+				"url": {
+					"raw": "https://gorest.co.in/public/v2/users/{{id}}",
+					"protocol": "https",
+					"host": [
+						"gorest",
+						"co",
+						"in"
+					],
+					"path": [
+						"public",
+						"v2",
+						"users",
+						"{{id}}"
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}

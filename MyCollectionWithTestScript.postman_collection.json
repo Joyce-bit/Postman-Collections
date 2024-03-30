@@ -1,0 +1,328 @@
+{
+	"info": {
+		"_postman_id": "108d54fd-dd60-4edb-91e3-62fc953c69a1",
+		"name": "MyCollectionWithTestScript",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "28182071"
+	},
+	"item": [
+		{
+			"name": "GetRequest",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"// Status Code Assertion\r",
+							"pm.test(\"Status code is 200\", function () {\r",
+							"    pm.response.to.have.status(200);\r",
+							"}) ;\r",
+							"\r",
+							"// Header Assertion\r",
+							"pm.test(\"Content-Type is application/json\", function () {\r",
+							"    pm.expect(pm.response.headers.get('Content-Type')).to.eql('application/json; charset=utf-8');\r",
+							"});\r",
+							"\r",
+							"// No Cookies to assert\r",
+							"\r",
+							"// Time Assertion\r",
+							"pm.test(\"Response time is less than 200ms\", function () {\r",
+							"    pm.expect(pm.response.responseTime).to.be.below(200);\r",
+							"});\r",
+							"\r",
+							"//Assigning the response to a variable\r",
+							"const jsonData = pm.response.json();\r",
+							"\r",
+							"// Value Type Assertion from Response\r",
+							"pm.test(\"Test data types of the response\", function () {\r",
+							"    pm.expect(jsonData).to.be.an(\"object\");\r",
+							"    pm.expect(jsonData.id).to.be.a(\"number\");\r",
+							"    pm.expect(jsonData.email).to.be.a(\"string\");\r",
+							"    pm.expect(jsonData.first_name).to.be.a(\"string\");\r",
+							"    pm.expect(jsonData.last_name).to.be.a(\"string\");\r",
+							"    pm.expect(jsonData.avatar).to.be.a(\"string\");\r",
+							"    pm.expect(jsonData.url).to.be.a(\"string\");\r",
+							"    pm.expect(jsonData.text).to.be.a(\"string\");\r",
+							"});\r",
+							"\r",
+							"// Data Validation in JSON Field level from response\r",
+							"pm.test(\"Data Validation in JSON Field level\", function () {\r",
+							"    pm.expect(jsonData.id).to.eql(2);\r",
+							"    pm.expect(jsonData.email).to.eql(\"janet.weaver@reqres.in\");\r",
+							"    pm.expect(jsonData.first_name).to.eql(\"Janet\");\r",
+							"    pm.expect(jsonData.last_name).to.eql(\"Weaver\");\r",
+							"    pm.expect(jsonData.avatar).to.eql(\"https://reqres.in/img/faces/2-image.jpg\");\r",
+							"    pm.expect(jsonData.url).to.eql(\"https://reqres.in/#support-heading\");\r",
+							"    pm.expect(jsonData.text).to.eql(\"To keep ReqRes free, contributions towards server costs are appreciated!\");\r",
+							"});\r",
+							"\r",
+							"// Data Validation in JSON Schema level from response\r",
+							"const schema = {\r",
+							"    \"type\": \"object\",\r",
+							"    \"properties\": {\r",
+							"        \"data\": {\r",
+							"            \"type\": \"object\",\r",
+							"            \"properties\": {\r",
+							"                \"id\": {\"type\": \"integer\"},\r",
+							"                \"email\": {\"type\": \"string\"},\r",
+							"                \"first_name\": {\"type\": \"string\"},\r",
+							"                \"last_name\": {\"type\": \"string\"},\r",
+							"                \"avatar\": {\"type\": \"string\"}\r",
+							"            },\r",
+							"            \"required\": [\r",
+							"                \"id\",\r",
+							"                \"email\",\r",
+							"                \"first_name\",\r",
+							"                \"last_name\",\r",
+							"                \"avatar\"\r",
+							"            ]\r",
+							"        },\r",
+							"        \"support\": {\r",
+							"            \"type\": \"object\",\r",
+							"            \"properties\": {\r",
+							"                \"url\": {\"type\": \"string\"},\r",
+							"                \"text\": {\"type\": \"string\"}\r",
+							"            },\r",
+							"            \"required\": [\"url\", \"text\"]\r",
+							"        }\r",
+							"    },\r",
+							"    \"required\": [\"data\", \"support\"]\r",
+							"};\r",
+							"\r",
+							"pm.test('Schema is valid',  function() {\r",
+							"    pm.expect(tv4.validate(jsonData, schema)).to.be.true;\r",
+							"});"
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "https://reqres.in/api/users/2",
+					"protocol": "https",
+					"host": [
+						"reqres",
+						"in"
+					],
+					"path": [
+						"api",
+						"users",
+						"2"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "PostRequest",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"// Status Code Assertion\r",
+							"pm.test(\"Status Code is 201\", ()=> {\r",
+							"    pm.response.to.have.status(201)\r",
+							"});\r",
+							"\r",
+							"// Cookies not available\r",
+							"\r",
+							"// Header Assertion\r",
+							"pm.test(\"Content-type header is present\", ()=> {\r",
+							"    pm.response.to.have.header(\"Content-Type\")\r",
+							"});\r",
+							"\r",
+							"// Time Assertion\r",
+							"pm.test(\"Response time is less than 400ms\", () => {\r",
+							"\tpm.expect(pm.response.responseTime).to.be.below(400);\r",
+							"});\r",
+							"\r",
+							"// Assigning json reponse to a variable\r",
+							"const jsonData = pm.response.json();\r",
+							"\r",
+							"// Json Schema Level Data Validation\r",
+							"var Schema = {\r",
+							"  \"$schema\": \"http://json-schema.org/draft-04/schema#\",\r",
+							"  \"type\": \"object\",\r",
+							"  \"properties\": {\r",
+							"    \"name\": {\r",
+							"      \"type\": \"string\"\r",
+							"    },\r",
+							"    \"job\": {\r",
+							"      \"type\": \"string\"\r",
+							"    },\r",
+							"    \"id\": {\r",
+							"      \"type\": \"string\"\r",
+							"    },\r",
+							"    \"createdAt\": {\r",
+							"      \"type\": \"string\"\r",
+							"    }\r",
+							"  },\r",
+							"  \"required\": [\r",
+							"    \"name\",\r",
+							"    \"job\",\r",
+							"    \"id\",\r",
+							"    \"createdAt\"\r",
+							"  ]\r",
+							"}\r",
+							"\r",
+							"pm.test('Schema is valid',  () => {\r",
+							"\tpm.expect(tv4.validate(jsonData, Schema)).to.be.true;\r",
+							"});\r",
+							"\r",
+							"// Value Type Assertion\r",
+							"pm.test(\"Test data types of the response\", () => {\r",
+							"\tpm.expect(jsonData).to.be.an(\"object\");\r",
+							"\tpm.expect(jsonData.name).to.be.a(\"string\");\r",
+							"    pm.expect(jsonData.job).to.be.a(\"string\");\r",
+							"});\r",
+							""
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"name\" : \"joe\",\r\n    \"job\" : \"trainer\"\r\n}\r\n",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "https://reqres.in/api/user",
+					"protocol": "https",
+					"host": [
+						"reqres",
+						"in"
+					],
+					"path": [
+						"api",
+						"user"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "PUTRequest",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"// Status Code Assertion\r",
+							"pm.test(\"Status Code is 200\", ()=> {\r",
+							"    pm.response.to.have.status(200)\r",
+							"});\r",
+							"\r",
+							"// Cookies not available\r",
+							"\r",
+							"// Header Assertion\r",
+							"pm.test(\"Content-type header is present\", ()=> {\r",
+							"    pm.response.to.have.header(\"Content-Type\")\r",
+							"});\r",
+							"\r",
+							"// Time Assertion\r",
+							"pm.test(\"Response time is less than 400ms\", () => {\r",
+							"\tpm.expect(pm.response.responseTime).to.be.below(400);\r",
+							"});\r",
+							"\r",
+							"// Assigning json reponse to a variable\r",
+							"const jsonData = pm.response.json();\r",
+							"\r",
+							"// Value Type Assertion\r",
+							"pm.test(\"Test data types of the response\", () => {\r",
+							"\tpm.expect(jsonData).to.be.an(\"object\");\r",
+							"\tpm.expect(jsonData.name).to.be.a(\"string\");\r",
+							"    pm.expect(jsonData.job).to.be.a(\"string\");\r",
+							"});"
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"method": "PUT",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n     \"name\" : \"Joe\",\r\n     \"job\" : \"engineer\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "https://reqres.in/api/user/822",
+					"protocol": "https",
+					"host": [
+						"reqres",
+						"in"
+					],
+					"path": [
+						"api",
+						"user",
+						"822"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "DELETERequest",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"// Status Code Assertion\r",
+							"pm.test(\"Status Code is 204\", ()=> {\r",
+							"    pm.response.to.have.status(204)\r",
+							"});\r",
+							"\r",
+							"// Cookies not available\r",
+							"\r",
+							"// Header Assertion\r",
+							"pm.test(\"Content-type header is present\", ()=> {\r",
+							"    pm.response.to.have.header(\"Content-Length\")\r",
+							"});"
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"method": "DELETE",
+				"header": [],
+				"url": {
+					"raw": "https://reqres.in/api/user/822\n",
+					"protocol": "https",
+					"host": [
+						"reqres",
+						"in"
+					],
+					"path": [
+						"api",
+						"user",
+						"822\n"
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}
